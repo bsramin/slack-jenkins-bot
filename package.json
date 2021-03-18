@@ -1,0 +1,38 @@
+{
+    "name": "@bsramin/slack-jenkins-bot",
+    "version": "1.0.0",
+    "description": "Slack-Jenkins Bot",
+    "license": "MIT",
+    "authors": [
+        "Ramin Banihashemi <a@ramin.it> (https://github.com/bsramin)"
+    ],
+    "main": "dist/src/index.js",
+    "_moduleAliases": {
+        "@app": "dist/src"
+    },
+    "engines": {
+        "node": "14.x.x",
+        "npm": "7.x.x"
+    },
+    "scripts": {
+        "dev": "ENVK=.env node -r ts-node/register -r tsconfig-paths/register -r envk ./src/index.ts",
+        "tsc": "tsc",
+        "compiler": "tsc -p . --skipLibCheck"
+    },
+    "dependencies": {
+        "envk": "^2.0.1",
+        "module-alias": "^2.2.2",
+        "mysql2": "^2.2.5",
+        "uuid": "^8.3.0",
+        "pino": "^6.11.2"
+    },
+    "devDependencies": {
+        "@types/mysql2": "types/mysql2",
+        "@types/node": "^14.14.35",
+        "@types/uuid": "^8.3.0",
+        "@types/pino": "^6.3.6",
+        "ts-node": "^9.1.1",
+        "tsconfig-paths": "^3.9.0",
+        "typescript": "^4.2.3"
+    }
+}
