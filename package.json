@@ -16,8 +16,9 @@
   },
   "scripts": {
     "dev": "ENVK=.env.dev nodemon --ignore 'src/**/*.test.ts' -e ts,njk,md,json --exec node -r envk -r ts-node/register -r tsconfig-paths/register ./src/server.ts",
+    "prod": "ENVK=.env.prod node -r module-alias/register -r envk ./dist/src/server.js",
     "tsc": "tsc",
-    "compiler": "tsc -p . --skipLibCheck"
+    "compile": "tsc -p . --skipLibCheck"
   },
   "dependencies": {
     "envk": "^2.0.1",

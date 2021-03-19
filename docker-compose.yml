@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  slack-jenkins-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: slack-jenkins-bot
+    command: "npm run prod"
+    ports:
+      - 80:80
