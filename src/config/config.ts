@@ -9,6 +9,10 @@ const Config: ConfigInterface = {
   environment: process.env.NODE_ENV ?? environment.DEV,
   description: description,
   logLevel: process.env.LOG_LEVEL ?? Loglevel.INFO,
+  database: {
+    connectionUri: process.env.DB_URI ?? '',
+    logEnabled: Boolean(Number(process.env.DB_LOG_ENABLED)),
+  },
   webServer: {
     url: `${process.env.SCHEMA}://${process.env.HOSTNAME}`,
     schema: process.env.SCHEMA ?? 'http',

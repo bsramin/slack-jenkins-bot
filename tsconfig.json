@@ -1,31 +1,39 @@
 {
-    "compilerOptions": {
-        "allowUnreachableCode": false,
-        "noFallthroughCasesInSwitch": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noEmitOnError": true,
-        "noUnusedLocals": true,
-        "sourceMap": false,
-        "strict": true,
-        "pretty": true,
-        "declaration": false,
-        "removeComments": true,
-        "strictPropertyInitialization": true,
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "module": "commonjs",
-        "target": "ES2019",
-        "outDir": "dist",
-        "moduleResolution": "node",
-        "baseUrl": "src",
-        "paths": {
-            "@app/*": ["*"]
-        }
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["dist", "node_modules", "test"]
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "sourceMap": false,
+    "strict": true,
+    "pretty": true,
+    "declaration": false,
+    "removeComments": true,
+    "strictPropertyInitialization": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "target": "ES2015",
+    "outDir": "dist",
+    "moduleResolution": "Node",
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": [
+        "*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test"
+  ]
 }

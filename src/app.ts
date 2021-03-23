@@ -1,17 +1,30 @@
 import Koa from 'koa';
 import helmet from 'koa-helmet';
-import logger from 'koa-pino-logger';
+import pino from 'pino';
+import koaPino from 'koa-pino-logger';
 import router from '@app/router';
 
+/**
+ * Application Framework
+ */
 const app = new Koa();
 
-/* Security headers */
+/**
+ * Security Headers
+ */
 app.use(helmet());
 
-/* Logger */
-app.use(logger());
+/**
+ * Logger
+ */
+const logger = pino();
+const koaLogger = koaPino({ logger });
+app.use(koaLogger);
 
-/* Load routes */
+/**
+ * Routes
+ */
 app.use(router.routes());
+
 
 export default app;

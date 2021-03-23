@@ -27,17 +27,19 @@
     "koa-pino-logger": "^3.0.0",
     "koa-router": "^10.0.0",
     "module-alias": "^2.2.2",
-    "pino": "^6.11.2",
-    "pino-pretty": "^4.7.1"
+    "mysql2": "^2.2.5",
+    "pino": "^6.11.2"
   },
   "devDependencies": {
     "@types/koa": "^2.13.1",
     "@types/koa-helmet": "^6.0.2",
     "@types/koa-pino-logger": "^3.0.0",
     "@types/koa-router": "^7.4.1",
+    "@types/mysql2": "types/mysql2",
     "@types/node": "^14.14.35",
     "@types/pino": "^6.3.6",
     "nodemon": "^2.0.7",
+    "pino-pretty": "^4.7.1",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.3"

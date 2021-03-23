@@ -4,6 +4,10 @@ interface ConfigInterface {
   environment: string;
   description: string;
   logLevel: string;
+  database: {
+    connectionUri: string;
+    logEnabled: boolean;
+  },
   webServer: {
     url: string;
     schema: string;
