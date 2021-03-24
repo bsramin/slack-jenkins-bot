@@ -26,6 +26,7 @@
     "koa-helmet": "^6.1.0",
     "koa-pino-logger": "^3.0.0",
     "koa-router": "^10.0.0",
+    "luxon": "^1.26.0",
     "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
     "pino": "^6.11.2"
@@ -35,6 +36,7 @@
     "@types/koa-helmet": "^6.0.2",
     "@types/koa-pino-logger": "^3.0.0",
     "@types/koa-router": "^7.4.1",
+    "@types/luxon": "^1.26.2",
     "@types/mysql2": "types/mysql2",
     "@types/node": "^14.14.35",
     "@types/pino": "^6.3.6",
