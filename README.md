@@ -1,3 +1,6 @@
 # SLACK-JENKINS BOT
 
-TBD
+## Installazione
+
+### Slack
+

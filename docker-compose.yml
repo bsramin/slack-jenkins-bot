@@ -1,9 +1,7 @@
 version: '3.3'
 services:
-  slack-jenkins-bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    image: ghcr.io/bsramin/slack-jenkins-bot/app:0.0.1
     hostname: slack-jenkins-bot
     command: "npm run prod"
     ports:
