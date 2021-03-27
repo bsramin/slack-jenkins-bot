@@ -4,6 +4,7 @@ interface ConfigInterface {
   environment: string;
   description: string;
   logLevel: string;
+  slackToken: string;
   database: {
     connectionUri: string;
     logEnabled: boolean;
@@ -13,7 +14,7 @@ interface ConfigInterface {
     schema: string;
     host: string;
     port: number;
-  }
+  },
 }
 
 export default ConfigInterface;

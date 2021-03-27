@@ -9,6 +9,7 @@ const Config: ConfigInterface = {
   environment: process.env.NODE_ENV ?? environment.DEV,
   description: description,
   logLevel: process.env.LOG_LEVEL ?? Loglevel.INFO,
+  slackToken: process.env.SLACK_BOT_TOKEN ?? '',
   database: {
     connectionUri: process.env.DB_URI ?? '',
     logEnabled: Boolean(Number(process.env.DB_LOG_ENABLED)),
@@ -18,7 +19,11 @@ const Config: ConfigInterface = {
     schema: process.env.SCHEMA ?? 'http',
     host: process.env.HOSTNAME ?? 'slb.localhost',
     port: Number(process.env.PORT) ?? 80,
-  }
+  },
 };
+
+if (Config.webServer.port !== 80 && Config.webServer.port !== 443) {
+  Config.webServer.url += ':'+Config.webServer.port;
+}
 
 export default Config;
