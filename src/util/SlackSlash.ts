@@ -27,8 +27,8 @@ export const SlackSlashResponse = (options: SlashSlashResponseOptions, fields: A
       fallback: options.message,
       color: getSeverityColor(options.severity),
       ts: DateTime.now().toMillis(),
-      footer: options.footer,
-      footer_icon: options.footer_icon ?? 'https://iquii-static.s3-eu-west-1.amazonaws.com/iquii_logo_square.png',
+      footer: options.footer ?? 'Company',
+      footer_icon: options.footer_icon ?? '',
       fields: [
         {
           title: options.title,

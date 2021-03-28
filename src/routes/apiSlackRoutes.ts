@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import koaBody from 'koa-body';
 import { checkToken } from '@app/service/SlackService';
-import { executeFromSlack } from '@app/controller/SlackExecuteController';
+import { executeFromSlackToJenkins } from '@app/controller/SlackExecuteController';
 import { SlackSlashErrorResponse } from '@app/util/SlackSlash';
 
 const router = new Router();
@@ -11,15 +11,31 @@ router.post('test', '/test', koaBody(), async ctx => {
   ctx.status = 200;
   let response;
   try {
+    /**
+     * Check the token
+     */
     checkToken(ctx.request.body.token);
-    response = executeFromSlack({
+
+    /**
+     * Execute the command
+     */
+    response = await executeFromSlackToJenkins({
+      team_id: ctx.request.body.team_id,
+      team_domain: ctx.request.body.team_domain,
+      channel_id: ctx.request.body.channel_id,
+      channel_name: ctx.request.body.channel_name,
+      user_id: ctx.request.body.user_id,
+      user_name: ctx.request.body.user_name,
       command: ctx.request.body.command,
       text: ctx.request.body.text,
+      api_app_id: ctx.request.body.api_app_id,
+      is_enterprise_install: ctx.request.body.is_enterprise_install,
+      response_url: ctx.request.body.response_url,
+      trigger_id: ctx.request.body.trigger_id,
     });
   } catch (e) {
     response = SlackSlashErrorResponse(e);
   }
-  console.log(response);
   return ctx.body = response;
 });
 

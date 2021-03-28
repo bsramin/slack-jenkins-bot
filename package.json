@@ -21,6 +21,7 @@
     "compile": "tsc -p . --skipLibCheck"
   },
   "dependencies": {
+    "@types/uuid": "^8.3.0",
     "envk": "^2.0.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
@@ -32,15 +33,16 @@
     "luxon": "^1.26.0",
     "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
-    "pino": "^6.11.2"
+    "pino": "^6.11.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/koa": "^2.13.1",
+    "@types/koa-favicon": "^2.0.19",
     "@types/koa-helmet": "^6.0.2",
     "@types/koa-pino-logger": "^3.0.0",
     "@types/koa-router": "^7.4.1",
     "@types/koa-static": "^4.0.1",
-    "@types/koa-favicon": "^2.0.19",
     "@types/luxon": "^1.26.2",
     "@types/mysql2": "types/mysql2",
     "@types/node": "^14.14.35",

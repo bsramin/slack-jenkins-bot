@@ -5,6 +5,7 @@ interface ConfigInterface {
   description: string;
   logLevel: string;
   slackToken: string;
+  jenkinsToken: string;
   database: {
     connectionUri: string;
     logEnabled: boolean;

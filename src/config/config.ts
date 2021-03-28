@@ -10,6 +10,7 @@ const Config: ConfigInterface = {
   description: description,
   logLevel: process.env.LOG_LEVEL ?? Loglevel.INFO,
   slackToken: process.env.SLACK_BOT_TOKEN ?? '',
+  jenkinsToken: process.env.JENKINS_TOKEN ?? '',
   database: {
     connectionUri: process.env.DB_URI ?? '',
     logEnabled: Boolean(Number(process.env.DB_LOG_ENABLED)),
