@@ -18,3 +18,12 @@ export const extractJenkinsCommand = (str: string): JenkinsCommandInterface => {
     params,
   };
 };
+
+export const objectToQueryString = (obj: any): string => {
+  let str = [];
+  for (const p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(obj[p][0]) + "=" + encodeURIComponent(obj[p][1]));
+    }
+  return str.join("&");
+}

@@ -20,6 +20,11 @@ export const saveJob = async (params: JobInterface): Promise<string> => {
   return jobId;
 };
 
+/**
+ * Retrieve Job by slug
+ *
+ * @param slug
+ */
 export const retrieveJobBySlug = async (slug: string): Promise<Job> => {
   let row;
   try {
@@ -28,7 +33,6 @@ export const retrieveJobBySlug = async (slug: string): Promise<Job> => {
       limit: 1
     });
   } catch (e) {
-    console.log(e);
     throw new SlackJobError(`Job '${slug}' not found or invalid`);
   }
 

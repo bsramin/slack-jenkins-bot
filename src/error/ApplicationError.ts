@@ -8,6 +8,7 @@ export class ApplicationError extends Error {
    */
   constructor(message: string, code: string|number) {
     super(message);
+    console.log(message);
     this.name = this.constructor.name;
     this.code = code;
   }

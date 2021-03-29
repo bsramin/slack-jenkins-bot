@@ -5,6 +5,7 @@ import { SlackParamsError } from '@app/error/SlackParamsError';
 import { checkUserPermission } from '@app/service/PermissionService';
 import { getJob } from '@app/service/JobService';
 import { extractJenkinsCommand } from '@app/util/String';
+import { executeJob } from '@app/service/JenkinsService';
 
 
 export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlashSlashAttachments> => {
@@ -44,7 +45,7 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
     /**
      * Call Jenkins
      */
-    console.log(jenkinsCommand.job, jenkinsCommand.params);
+    await executeJob(job.job, jenkinsCommand.params);
 
     /**
      * Return to slack a correct response

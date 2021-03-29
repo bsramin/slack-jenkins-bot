@@ -11,6 +11,12 @@ export const error = {
     code: 'database',
     description: 'Database error',
   },
+  JENKINS: {
+    GENERIC: {
+      description: 'Generic error',
+      code: 900,
+    },
+  },
   SLACK: {
     GENERIC: {
       description: 'Generic error',
