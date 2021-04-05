@@ -29,7 +29,7 @@ export const savePermission = async (params: PermissionInterface): Promise<strin
 export const retrievePermissionByUserAndJob = async (user_id: string, job_uuid: string): Promise<Permission> => {
   let row;
   try {
-    row = await connection.select(`SELECT uuid FROM permission WHERE user_id = :user_id and uuid = :job_uuid LIMIT 1`, {
+    row = await connection.select(`SELECT uuid FROM permission WHERE user_id = :user_id and job_uuid = :job_uuid LIMIT 1`, {
       user_id,
       job_uuid,
       limit: 1
