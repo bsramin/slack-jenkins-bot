@@ -1,12 +1,10 @@
 import Koa from 'koa';
 import helmet from 'koa-helmet';
-import pino from 'pino';
 import koaPino from 'koa-pino-logger';
 import router from '@app/router';
+import logger from '@app/logger';
 import serve from 'koa-static';
 import favicon from 'koa-favicon';
-import Config from '@app/config/config';
-import { environment } from '@app/constant/environment';
 
 /**
  * Application Framework
@@ -18,21 +16,6 @@ const app = new Koa();
  */
 app.use(helmet());
 
-/**
- * Logger
- */
-let loggerOptions;
-if (Config.environment === environment.PROD) {
-  loggerOptions = {
-    prettifier: require('pino-pretty'),
-    prettyPrint: {
-      colorize: true,
-      levelFirst: true,
-      translateTime: 'SYS:standard',
-    }
-  }
-}
-const logger = pino(loggerOptions);
 const koaLogger = koaPino({ logger });
 app.use(koaLogger);
 

@@ -6,6 +6,7 @@ import { checkUserPermission } from '@app/service/PermissionService';
 import { getJob } from '@app/service/JobService';
 import { extractJenkinsCommand } from '@app/util/String';
 import { jenkinsCall } from '@app/service/JenkinsService';
+import logger from '@app/logger';
 
 export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlashSlashAttachments> => {
   try {
@@ -34,6 +35,7 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
      * Save the request
      */
     const request = await addRequest(params);
+    logger.info(`${decodeURIComponent(job.job)} executed with '${args}' by ${request.user_id}`);
 
     /**
      * Check the user authorization

@@ -1,3 +1,5 @@
+import logger from '@app/logger';
+
 export class ApplicationError extends Error {
   public name: string;
   public code: string|number;
@@ -8,7 +10,7 @@ export class ApplicationError extends Error {
    */
   constructor(message: string, code: string|number) {
     super(message);
-    console.log(message);
+    logger.error(message);
     this.name = this.constructor.name;
     this.code = code;
   }

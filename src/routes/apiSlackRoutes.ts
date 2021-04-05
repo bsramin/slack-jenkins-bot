@@ -4,6 +4,7 @@ import { checkToken } from '@app/service/SlackService';
 import { executeFromSlackToJenkins } from '@app/controller/SlackExecuteController';
 import { SlackSlashErrorResponse } from '@app/util/SlackSlash';
 import Config from '@app/config/config';
+import logger from '@app/logger';
 
 const router = new Router();
 
@@ -35,6 +36,7 @@ router.post('execute', '/'+Config.executePath, koaBody(), async ctx => {
       trigger_id: ctx.request.body.trigger_id,
     });
   } catch (e) {
+    logger.error(e);
     response = SlackSlashErrorResponse(e);
   }
   return ctx.body = response;

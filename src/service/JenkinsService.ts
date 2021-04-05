@@ -16,6 +16,7 @@ import { callbackSlack } from '@app/service/SlackService';
 import { severityType, SlackSlashResponse } from '@app/util/SlackSlash';
 import { SlashSlashResponseOptions } from '@app/interface/slackInterface';
 import { ReqInterface } from '@app/interface/ReqInterface';
+import logger from '@app/logger';
 
 /**
  * The main method for calling jenkins
@@ -25,30 +26,34 @@ import { ReqInterface } from '@app/interface/ReqInterface';
  * @param request
  */
 export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, request: ReqInterface) => {
-  /**
-   * Execute the jenkins job
-   */
-  const getterJobInfoUrl = await executeJob(job.job, jenkinsCommandParams);
+  try {
+    /**
+     * Execute the jenkins job
+     */
+    const getterJobInfoUrl = await executeJob(job.job, jenkinsCommandParams);
 
-  /**
-   * Check and save the started build
-   */
-  let build = await saveBuildStarted(
-    await retrieveJobInfo(getterJobInfoUrl, job.uuid, request.uuid),
-  );
+    /**
+     * Check and save the started build
+     */
+    let build = await saveBuildStarted(
+      await retrieveJobInfo(getterJobInfoUrl, job.uuid, request.uuid),
+    );
 
-  /**
-   * Check and save if the job is finished
-   */
-  build = await checkJobFinished(job.job, build);
-  await saveBuildEnded(build);
+    /**
+     * Check and save if the job is finished
+     */
+    build = await checkJobFinished(job.job, build);
+    await saveBuildEnded(build);
 
-  await callbackSlack(request, SlackSlashResponse(<SlashSlashResponseOptions>{
-    response_type: 'in_channel',
-    title: decodeURIComponent(job.job),
-    message: (build.status == 'SUCCESS') ? `:tada: finished!` : `:firecracker: failed!`,
-    severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
-  }));
+    await callbackSlack(request, SlackSlashResponse(<SlashSlashResponseOptions>{
+      response_type: 'in_channel',
+      title: decodeURIComponent(job.job),
+      message: (build.status == 'SUCCESS') ? `:tada: finished!` : `:firecracker: failed!`,
+      severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
+    }));
+  } catch (e) {
+    throw e;
+  }
 };
 
 /**
@@ -103,7 +108,7 @@ const retrieveJobInfo = async (getterJobInfoUrl: string, jobId: string, reqId: s
       req_uuid: reqId,
     };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   } finally {
     await Thread.terminate(worker);
   }
@@ -136,7 +141,7 @@ const checkJobFinished = async (jobName: string, build: BuildInterface): Promise
       status: item.result
     };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   } finally {
     await Thread.terminate(worker);
   }
