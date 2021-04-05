@@ -15,8 +15,8 @@
     "npm": "7.x.x"
   },
   "scripts": {
-    "dev": "ENVK=.env.dev nodemon --ignore 'src/**/*.test.ts' -e ts,njk,md,json --exec node -r envk -r ts-node/register -r tsconfig-paths/register ./src/server.ts",
-    "prod": "ENVK=.env.prod node -r module-alias/register -r envk ./dist/src/server.js",
+    "dev": "ENVK=.env nodemon --ignore 'src/**/*.test.ts' -e ts,njk,md,json --exec node -r envk -r ts-node/register -r tsconfig-paths/register ./src/server.ts",
+    "prod": "ENVK=.env node -r module-alias/register -r envk ./dist/src/server.js",
     "tsc": "tsc",
     "compile": "tsc -p . --skipLibCheck"
   },
@@ -35,6 +35,8 @@
     "module-alias": "^2.2.2",
     "mysql2": "^2.2.5",
     "pino": "^6.11.2",
+    "threads": "^1.6.3",
+    "tiny-worker": "^2.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

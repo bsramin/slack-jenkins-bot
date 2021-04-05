@@ -5,8 +5,7 @@ import { SlackParamsError } from '@app/error/SlackParamsError';
 import { checkUserPermission } from '@app/service/PermissionService';
 import { getJob } from '@app/service/JobService';
 import { extractJenkinsCommand } from '@app/util/String';
-import { executeJob } from '@app/service/JenkinsService';
-
+import { jenkinsCall } from '@app/service/JenkinsService';
 
 export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlashSlashAttachments> => {
   try {
@@ -24,7 +23,6 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
     if (args?.length === 0 && !/\s/.test(<string>args)) {
       return Promise.reject(new SlackParamsError());
     }
-
     const jenkinsCommand = extractJenkinsCommand(args);
 
     /**
@@ -35,7 +33,7 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
     /**
      * Save the request
      */
-    await addRequest(params);
+    const request = await addRequest(params);
 
     /**
      * Check the user authorization
@@ -45,16 +43,16 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
     /**
      * Call Jenkins
      */
-    await executeJob(job.job, jenkinsCommand.params);
+    jenkinsCall(job, jenkinsCommand.params, request);
 
     /**
      * Return to slack a correct response
      */
     return SlackSlashResponse(<SlashSlashResponseOptions>{
-      response_type: 'in_channel',
-      title: 'test',
-      message: 'message',
-      severity: severityType.success,
+      response_type: "in_channel",
+      title: decodeURIComponent(job.job),
+      message: `:rocket: started...`,
+      severity: severityType.info,
     });
   } catch (e) {
     throw e;

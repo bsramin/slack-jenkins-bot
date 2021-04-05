@@ -5,13 +5,18 @@ services:
     hostname: slack-jenkins-bot
     command: "npm run prod"
     ports:
-      - 80:80
+      - ${DOCKER_EXPOSE_HTTP_PORT}:80
   db:
     image: mysql:5.7
     restart: always
     ports:
-      - 3306:3306
+      - ${DOCKER_EXPOSE_MYSQL_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD: bot
-      MYSQL_DATABASE: bot
+      MYSQL_DATABASE: slack_jenkins_bot
+    volumes:
+      - mysql-data:/var/lib/mysql
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+volumes:
+  mysql-data:

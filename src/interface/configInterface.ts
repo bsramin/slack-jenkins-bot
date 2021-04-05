@@ -4,6 +4,7 @@ interface ConfigInterface {
   environment: string;
   description: string;
   logLevel: string;
+  executePath: string;
   slackToken: string;
   jenkins: {
     domain: string;

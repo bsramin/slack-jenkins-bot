@@ -11,7 +11,7 @@ import { SlackSaveError } from '@app/error/SlackSaveError';
  *
  * @param params
  */
-export const addRequest = async (params: SlackRequest): Promise<string> => {
+export const addRequest = async (params: SlackRequest): Promise<ReqInterface> => {
   try {
     const req = <ReqInterface>{
       uuid: uuidv5(process.hrtime(), reqNamespace),

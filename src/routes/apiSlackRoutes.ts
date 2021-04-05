@@ -3,10 +3,11 @@ import koaBody from 'koa-body';
 import { checkToken } from '@app/service/SlackService';
 import { executeFromSlackToJenkins } from '@app/controller/SlackExecuteController';
 import { SlackSlashErrorResponse } from '@app/util/SlackSlash';
+import Config from '@app/config/config';
 
 const router = new Router();
 
-router.post('test', '/test', koaBody(), async ctx => {
+router.post('execute', '/'+Config.executePath, koaBody(), async ctx => {
   ctx.type = 'application/json';
   ctx.status = 200;
   let response;
@@ -38,5 +39,6 @@ router.post('test', '/test', koaBody(), async ctx => {
   }
   return ctx.body = response;
 });
+
 
 export default router;

@@ -9,6 +9,7 @@ const Config: ConfigInterface = {
   environment: process.env.NODE_ENV ?? environment.DEV,
   description: description,
   logLevel: process.env.LOG_LEVEL ?? Loglevel.INFO,
+  executePath: process.env.EXECUTE_PATH ?? 'execute',
   slackToken: process.env.SLACK_BOT_TOKEN ?? '',
   jenkins: {
     domain: process.env.JENKINS_DOMAIN ?? '',

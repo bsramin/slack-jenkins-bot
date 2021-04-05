@@ -5,15 +5,13 @@ import { DatabaseError } from '@app/error/DatabaseError';
 /**
  * Save the request to the database
  *
- * @param params
+ * @param request
  */
-export const saveRequest = async (params: ReqInterface): Promise<string> => {
-  let reqId: string;
+export const saveRequest = async (request: ReqInterface): Promise<ReqInterface> => {
   try {
-    await connection.insert('req', params);
-    reqId = params.uuid;
+    await connection.insert('req', request);
   } catch (e) {
     throw new DatabaseError(e);
   }
-  return reqId;
+  return request;
 };
