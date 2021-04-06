@@ -24,7 +24,8 @@ export default class Database {
       namedPlaceholders: true,
       dateStrings: true,
       timezone: 'local',
-      typeCast: true
+      typeCast: true,
+      multipleStatements: true
     });
   }
 
@@ -46,6 +47,15 @@ export default class Database {
       this.logger(this.composeQuery(query, replacements));
     }
     const result = await connection.execute(query, replacements);
+    return result;
+  };
+
+  /**
+   * @param query
+   * @param connection
+   */
+  public query = async (query: string, connection: PoolConnection | Pool = this.pool): Promise<any> => {
+    const result = await connection.query(query);
     return result;
   };
 
