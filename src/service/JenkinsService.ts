@@ -14,9 +14,24 @@ import { saveBuildEnded, saveBuildStarted } from '@app/repository/BuildRepositor
 import { JobInterface } from '@app/interface/JobInterface';
 import { callbackSlack } from '@app/service/SlackService';
 import { severityType, SlackSlashResponse } from '@app/util/SlackSlash';
-import { SlashSlashResponseOptions } from '@app/interface/slackInterface';
+import { SlackSlashAttachmentFields, SlackSlashResponseOptions } from '@app/interface/slackInterface';
 import { ReqInterface } from '@app/interface/ReqInterface';
 import logger from '@app/logger';
+
+/**
+ * @param jobName
+ * @param buildNumber
+ */
+export const composeBuildedJobApiUrl = (jobName: string, buildNumber: string): string => {
+  return `${Config.jenkins.domain}/job/${jobName}/${buildNumber}/`;
+};
+
+/**
+ * @param jobName
+ */
+export const composeBaseJobApiUrl = (jobName: string): string => {
+  return `${Config.jenkins.domain}/job/${jobName}/`;
+};
 
 /**
  * The main method for calling jenkins
@@ -45,12 +60,28 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
     build = await checkJobFinished(job.job, build);
     await saveBuildEnded(build);
 
-    await callbackSlack(request, SlackSlashResponse(<SlashSlashResponseOptions>{
-      response_type: 'in_channel',
-      title: decodeURIComponent(job.job),
-      message: (build.status == 'SUCCESS') ? `:tada: finished!` : `:firecracker: failed!`,
-      severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
-    }));
+    await callbackSlack(request,
+      SlackSlashResponse(
+        <SlackSlashResponseOptions>{
+          response_type: 'in_channel',
+          title: decodeURIComponent(job.job),
+          message: (build.status == 'SUCCESS') ? `:tada: finished!` : `:firecracker: failed!`,
+          severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
+        },
+        <SlackSlashAttachmentFields[]>[
+          {
+            title: 'Build number',
+            value: build.build_number,
+            short: true,
+          },
+          {
+          title: 'Console',
+          value: `<${composeBuildedJobApiUrl(job.job, build.build_number)}console|View>`,
+          short: true,
+          },
+        ],
+      ),
+    );
   } catch (e) {
     throw e;
   }
@@ -138,28 +169,13 @@ const checkJobFinished = async (jobName: string, build: BuildInterface): Promise
       build_number: build.build_number,
       job_uuid: build.job_uuid,
       req_uuid: build.req_uuid,
-      status: item.result
+      status: item.result,
     };
   } catch (error) {
     logger.error(error);
   } finally {
     await Thread.terminate(worker);
   }
-};
-
-/**
- * @param jobName
- * @param buildNumber
- */
-const composeBuildedJobApiUrl = (jobName: string, buildNumber: string): string => {
-  return `${Config.jenkins.domain}/job/${jobName}/${buildNumber}/`;
-};
-
-/**
- * @param jobName
- */
-const composeBaseJobApiUrl = (jobName: string): string => {
-  return `${Config.jenkins.domain}/job/${jobName}/`;
 };
 
 /**

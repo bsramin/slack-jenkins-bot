@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import {
-  SlashSlashAttachmentFields,
-  SlashSlashAttachments,
-  SlashSlashResponseOptions,
+  SlackSlashAttachmentFields,
+  SlackSlashAttachments,
+  SlackSlashResponseOptions,
 } from '@app/interface/slackInterface';
 import { ApplicationError } from '@app/error/ApplicationError';
 import Config from '@app/config/config';
@@ -20,28 +20,24 @@ export const severityType = {
  * @param options
  * @param fields
  */
-export const SlackSlashResponse = (options: SlashSlashResponseOptions, fields: Array<SlashSlashAttachmentFields> = []): SlashSlashAttachments => {
-  const response: SlashSlashAttachments = {
+export const SlackSlashResponse = (options: SlackSlashResponseOptions, fields: Array<SlackSlashAttachmentFields> = []): SlackSlashAttachments => {
+  const response: SlackSlashAttachments = {
     attachments: [{
       response_type: options.response_type ?? 'ephemeral', // ephemeral | in_channel
       fallback: options.message,
       color: getSeverityColor(options.severity),
       ts: DateTime.now().toMillis(),
+      title: options.title,
+      text: options.message,
+      image_url: options.image ?? '',
       footer: options.footer ?? Config.custom.footerCompany,
       footer_icon: options.footer_icon ?? Config.custom.footerLogoUrl,
-      fields: [
-        {
-          title: options.title,
-          value: options.message,
-          short: true,
-        },
-      ],
       mrkdwn_in: ['fallback', 'fields'],
     }],
   };
 
   if (fields.length > 0) {
-    response.attachments[0].fields = [...response.attachments[0].fields, ...fields];
+    response.attachments[0].fields = fields;
   }
 
   if (options.hasOwnProperty('image')) {
@@ -56,9 +52,9 @@ export const SlackSlashResponse = (options: SlashSlashResponseOptions, fields: A
  *
  * @param e
  */
-export const SlackSlashErrorResponse = (e: Error): SlashSlashAttachments => {
+export const SlackSlashErrorResponse = (e: Error): SlackSlashAttachments => {
   const managedErrorExpression = /^9\d{2}$/g; // 9xx errors
-  let options = <SlashSlashResponseOptions>{
+  let options = <SlackSlashResponseOptions>{
     title: 'Error',
     message: 'Uh Oh... there was a problem',
     severity: severityType.error,

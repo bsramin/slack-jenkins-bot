@@ -1,24 +1,26 @@
-export interface SlashSlashAttachments {
+export interface SlackSlashAttachments {
   attachments: [{
     response_type: string,
+    title: string,
+    text: string,
     fallback: string,
     color: string,
     ts: number,
     footer?: string,
     footer_icon?: string,
     image_url?: string,
-    fields: Array<SlashSlashAttachmentFields>,
+    fields?: Array<SlackSlashAttachmentFields>,
     mrkdwn_in: Array<string>
   }]
 }
 
-export interface SlashSlashAttachmentFields {
+export interface SlackSlashAttachmentFields {
   title: string,
   value: string,
   short: boolean,
 }
 
-export interface SlashSlashResponseOptions {
+export interface SlackSlashResponseOptions {
   response_type?: string,
   title: string,
   message: string,

@@ -1,5 +1,7 @@
-import { severityType, SlackSlashResponse } from '@app/util/SlackSlash';
-import { SlackRequest, SlashSlashAttachments, SlashSlashResponseOptions } from '@app/interface/slackInterface';
+import {
+  SlackRequest,
+  SlackSlashAttachments,
+} from '@app/interface/slackInterface';
 import { addRequest } from '@app/service/ReqService';
 import { SlackParamsError } from '@app/error/SlackParamsError';
 import { checkUserPermission } from '@app/service/PermissionService';
@@ -7,8 +9,9 @@ import { getJob } from '@app/service/JobService';
 import { extractJenkinsCommand } from '@app/util/String';
 import { jenkinsCall } from '@app/service/JenkinsService';
 import logger from '@app/logger';
+import { responseSlack } from '@app/service/SlackService';
 
-export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlashSlashAttachments> => {
+export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
   try {
     /**
      * Get the command
@@ -50,12 +53,7 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
     /**
      * Return to slack a correct response
      */
-    return SlackSlashResponse(<SlashSlashResponseOptions>{
-      response_type: "in_channel",
-      title: decodeURIComponent(job.job),
-      message: `:rocket: started...`,
-      severity: severityType.info,
-    });
+    return responseSlack(job);
   } catch (e) {
     throw e;
   }
