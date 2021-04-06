@@ -65,7 +65,7 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
         <SlackSlashResponseOptions>{
           response_type: 'in_channel',
           title: decodeURIComponent(job.job),
-          message: (build.status == 'SUCCESS') ? `:tada: finished!` : `:firecracker: failed!`,
+          message: (build.status == 'SUCCESS') ? `:tada: Completed.` : `:firecracker: Failed!`,
           severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
         },
         <SlackSlashAttachmentFields[]>[

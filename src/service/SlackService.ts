@@ -29,7 +29,7 @@ export const responseSlack = (job: JobInterface) => {
     <SlackSlashResponseOptions>{
       response_type: "in_channel",
       title: decodeURIComponent(job.job),
-      message: `:rocket: started...`,
+      message: `:rocket: Started...`,
       severity: severityType.info,
     },
     <SlackSlashAttachmentFields[]>[
