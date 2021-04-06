@@ -32,6 +32,6 @@
 ### In every job
 - Configure API token
   - In Job Configuration page, Below the `Build Triggers` section
-    - Select the Trigger builds remotely and Enter your `JENKINS_TOKEN` previusly created in `Authentication Token` as shown below.
+    - Select the `Trigger builds remotely` and Enter your `JENKINS_TOKEN` previously created in `Authentication Token` as shown below.
 
 ![img_6.png](img_6.png)
