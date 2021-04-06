@@ -1,8 +1,8 @@
 import {
   SlackRequest,
-  SlackSlashAttachments,
+  SlackSlashAttachments, SlackSlashResponseOptions,
 } from '@app/interface/slackInterface';
-import { addRequest } from '@app/service/ReqService';
+import { addRequest, getLatestRequests } from '@app/service/ReqService';
 import { SlackParamsError } from '@app/error/SlackParamsError';
 import { checkUserPermission } from '@app/service/PermissionService';
 import { getJob } from '@app/service/JobService';
@@ -10,8 +10,12 @@ import { extractJenkinsCommand } from '@app/util/String';
 import { jenkinsCall } from '@app/service/JenkinsService';
 import logger from '@app/logger';
 import { responseSlack } from '@app/service/SlackService';
+import { severityType, SlackSlashResponse } from '@app/util/SlackSlash';
 
-export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
+/**
+ * @param params
+ */
+export const executeFromSlack = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
   try {
     /**
      * Get the command
@@ -54,6 +58,34 @@ export const executeFromSlackToJenkins = async (params: SlackRequest): Promise<S
      * Return to slack a correct response
      */
     return responseSlack(job);
+  } catch (e) {
+    throw e;
+  }
+};
+
+/**
+ * @param params
+ */
+export const latestRequests = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
+  try {
+    /**
+     * Save the request
+     */
+    await addRequest(params);
+
+    /**
+     * Retrieve the latest requests
+     */
+    const latestRequests = await getLatestRequests();
+
+    return SlackSlashResponse(
+      <SlackSlashResponseOptions>{
+        response_type: 'ephemeral',
+        title: 'Latest requests',
+        message: latestRequests,
+        severity: severityType.info,
+      }
+    );
   } catch (e) {
     throw e;
   }

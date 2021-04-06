@@ -14,6 +14,23 @@ export const severityType = {
   error: 'error',
 };
 
+export const convertRequestToSlackRequest = (params: any) => {
+  return {
+    team_id: params.body.team_id,
+    team_domain: params.body.team_domain,
+    channel_id: params.body.channel_id,
+    channel_name: params.body.channel_name,
+    user_id: params.body.user_id,
+    user_name: params.body.user_name,
+    command: params.body.command,
+    text: params.body.text,
+    api_app_id: params.body.api_app_id,
+    is_enterprise_install: params.body.is_enterprise_install,
+    response_url: params.body.response_url,
+    trigger_id: params.body.trigger_id,
+  };
+};
+
 /**
  * RESPONSE
  *
@@ -66,7 +83,7 @@ export const SlackSlashErrorResponse = (e: Error): SlackSlashAttachments => {
   }
 
   return SlackSlashResponse(options);
-}
+};
 
 /**
  * Get correct color from severity

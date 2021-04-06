@@ -15,3 +15,15 @@ export const saveRequest = async (request: ReqInterface): Promise<ReqInterface> 
   }
   return request;
 };
+
+/**
+ * Retrieve the latest 10 requests
+ */
+export const retrievelatestRequests = async (): Promise<any> => {
+  try {
+    const latest = await connection.select('SELECT * FROM req ORDER BY date_creation DESC LIMIT 10');
+    return latest;
+  } catch (e) {
+    throw new DatabaseError(e);
+  }
+}

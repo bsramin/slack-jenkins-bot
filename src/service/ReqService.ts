@@ -3,8 +3,9 @@ import { SlackRequest } from '@app/interface/slackInterface';
 import { v5 as uuidv5 } from 'uuid';
 import { namespace as reqNamespace } from '@app/model/Req';
 import { DateTime } from 'luxon';
-import { saveRequest } from '@app/repository/ReqRepository';
+import { retrievelatestRequests, saveRequest } from '@app/repository/ReqRepository';
 import { SlackSaveError } from '@app/error/SlackSaveError';
+import { SlackGenericError } from '@app/error/SlackGenericError';
 
 /**
  * Add Request
@@ -33,3 +34,22 @@ export const addRequest = async (params: SlackRequest): Promise<ReqInterface> =>
     throw new SlackSaveError(e);
   }
 };
+
+/**
+ * Get latest 10 requests
+ */
+export const getLatestRequests = async (): Promise<any> => {
+  try {
+    const latest = await retrievelatestRequests();
+    let latestRequests: string = '';
+
+    for (const [, value] of Object.entries(latest)) {
+      // @ts-ignore
+      latestRequests += `- <@${value.user_id}> \`${value.command} ${value.text}\` ${DateTime.fromSQL(value.date_creation).toRFC2822()}\n`;
+    }
+
+    return latestRequests;
+  } catch (e) {
+    throw new SlackGenericError(e);
+  }
+}
