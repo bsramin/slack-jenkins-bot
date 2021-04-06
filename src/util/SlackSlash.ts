@@ -27,8 +27,8 @@ export const SlackSlashResponse = (options: SlashSlashResponseOptions, fields: A
       fallback: options.message,
       color: getSeverityColor(options.severity),
       ts: DateTime.now().toMillis(),
-      footer: options.footer ?? 'Company',
-      footer_icon: options.footer_icon ?? '',
+      footer: options.footer ?? Config.custom.footerCompany,
+      footer_icon: options.footer_icon ?? Config.custom.footerLogoUrl,
       fields: [
         {
           title: options.title,

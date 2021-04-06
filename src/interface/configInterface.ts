@@ -6,12 +6,16 @@ interface ConfigInterface {
   logLevel: string;
   executePath: string;
   slackToken: string;
+  custom: {
+    footerCompany: string;
+    footerLogoUrl: string;
+  },
   jenkins: {
     domain: string;
     token: string;
     username: string;
     password: string;
-  }
+  },
   database: {
     connectionUri: string;
     logEnabled: boolean;

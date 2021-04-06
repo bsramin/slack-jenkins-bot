@@ -11,6 +11,10 @@ const Config: ConfigInterface = {
   logLevel: process.env.LOG_LEVEL ?? Loglevel.INFO,
   executePath: process.env.EXECUTE_PATH ?? 'execute',
   slackToken: process.env.SLACK_BOT_TOKEN ?? '',
+  custom: {
+    footerCompany: process.env.FOOTER_COMPANY ?? '',
+    footerLogoUrl: process.env.FOOTER_LOGO_URL ?? '',
+  },
   jenkins: {
     domain: process.env.JENKINS_DOMAIN ?? '',
     token: process.env.JENKINS_TOKEN ?? '',
