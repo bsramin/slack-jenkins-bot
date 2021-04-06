@@ -21,6 +21,34 @@ export const saveJob = async (params: JobInterface): Promise<string> => {
 };
 
 /**
+ * Retrieve all jobs
+ */
+export const retrieveAllJobs = async (): Promise<Job[]> => {
+  let rows;
+  let jobs: Job[] = [];
+  try {
+    rows = await connection.select(`SELECT uuid, slug, job, enabled, date_creation FROM job`);
+  } catch (e) {
+    throw new SlackJobError(`No Jobs found or invalid command`);
+  }
+  for (const [, value] of Object.entries(rows)) {
+    jobs.push(<Job>{
+      // @ts-ignore
+      uuid: value.uuid,
+      // @ts-ignore
+      slug: value.slug,
+      // @ts-ignore
+      job: value.job,
+      // @ts-ignore
+      enabled: value.enabled,
+      // @ts-ignore
+      date_creation: value.date_creation,
+    });
+  }
+  return jobs;
+};
+
+/**
  * Retrieve Job by slug
  *
  * @param slug
@@ -30,7 +58,7 @@ export const retrieveJobBySlug = async (slug: string): Promise<Job> => {
   try {
     row = await connection.select(`SELECT uuid, slug, job, enabled, date_creation FROM job WHERE slug = :slug LIMIT 1`, {
       slug,
-      limit: 1
+      limit: 1,
     });
   } catch (e) {
     throw new SlackJobError(`Job '${slug}' not found or invalid`);

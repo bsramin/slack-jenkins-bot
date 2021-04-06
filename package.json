@@ -12,17 +12,31 @@
     "npm": "7.x.x"
   },
   "scripts": {
-    "init:dev": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/init/db.ts",
-    "init:prod": "ENVK=.env node -r envk ./dist/init/db.js",
+    "dev:init": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/init/db.ts",
+    "prod:init": "ENVK=.env node -r envk ./dist/init/db.js",
+
     "dev": "ENVK=.env nodemon --ignore 'src/**/*.test.ts' -e ts,njk,md,json --exec node -r envk -r ts-node/register -r tsconfig-paths/register ./src/server.ts",
     "prod": "ENVK=.env node -r module-alias/register -r envk ./dist/src/server.js",
+
+    "dev:job:add": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/addNewJobCommand.ts",
+    "prod:job:add": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/addNewJobCommand.js",
+
+    "dev:job:list": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/listJobCommand.ts",
+    "prod:job:list": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/listJobCommand.js",
+
+    "dev:permission:add": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/addPermissionCommand.ts",
+    "prod:permission:add": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/addPermissionCommand.js",
+
     "tsc": "tsc",
     "compile": "tsc -p . --skipLibCheck"
   },
   "dependencies": {
+    "@types/inquirer": "^7.3.1",
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
+    "commander": "^7.2.0",
     "envk": "^2.0.1",
+    "inquirer": "^8.0.0",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-favicon": "^2.1.0",

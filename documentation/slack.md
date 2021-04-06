@@ -11,7 +11,7 @@
   - Command (es. `/requests`)
   - Request url ( `https://xxxx.xxx/v1/slack/requests/latest` )
   - Escape channels, users, and links sent to your app => `OK`
-  
+
 
 - Install in your workspace
 - Save the `Verification Token` in yout .env variable `SLACK_BOT_TOKEN`

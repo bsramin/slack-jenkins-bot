@@ -1,8 +1,5 @@
 import { JobInterface } from '@app/interface/JobInterface';
-import { v5 as uuidv5 } from 'uuid';
-import { namespace as reqNamespace } from '@app/model/Req';
-import { DateTime } from 'luxon';
-import { retrieveJobBySlug, saveJob } from '@app/repository/JobRepository';
+import { retrieveAllJobs, retrieveJobBySlug, saveJob } from '@app/repository/JobRepository';
 import { SlackSaveError } from '@app/error/SlackSaveError';
 import Job from '@app/model/Job';
 
@@ -14,13 +11,7 @@ import Job from '@app/model/Job';
 export const addJob = async (params: JobInterface): Promise<string> => {
   let job;
   try {
-    job = await saveJob(<JobInterface>{
-      uuid: uuidv5(process.hrtime(), reqNamespace),
-      slug: params.slug,
-      job: params.job,
-      enabled: params.enabled,
-      date_creation: DateTime.now().toSQL({ includeOffset: false }),
-    });
+    job = await saveJob(params);
 
     return job;
   } catch (e) {
@@ -29,7 +20,19 @@ export const addJob = async (params: JobInterface): Promise<string> => {
 }
 
 /**
- * Get Request
+ * Get all jobs
+ */
+export const getAllJobs = async (): Promise<Job[]> => {
+  try {
+    const jobs = await retrieveAllJobs();
+    return jobs;
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
+ * Get Job
  *
  * @param jobSlug
  */

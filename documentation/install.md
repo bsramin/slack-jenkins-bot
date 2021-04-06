@@ -1,9 +1,15 @@
 ## SETUP
 
-- Create new `.env` file from `.env.dist`
+###GIT
 
-@TODO - add job in database
-@TODO - add correct permission in database
+- Clone this repo
+- Create new `.env` file from `.env.dist`
+- `npm install`
+- `npm run dev` or `npm run prod`
+
+###DOCKER
+
+@TBD
 
 ### DB INITIALIZATION
 

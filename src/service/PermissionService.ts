@@ -1,7 +1,4 @@
 import { PermissionInterface } from '@app/interface/PermissionInterface';
-import { v5 as uuidv5 } from 'uuid';
-import { namespace as permissionNamespace } from '@app/model/Permission';
-import { DateTime } from 'luxon';
 import { retrievePermissionByUserAndJob, savePermission } from '@app/repository/PermissionRepository';
 import { SlackSaveError } from '@app/error/SlackSaveError';
 import { JobInterface } from '@app/interface/JobInterface';
@@ -14,12 +11,7 @@ import { JobInterface } from '@app/interface/JobInterface';
 export const addPermission = async (params: PermissionInterface): Promise<string> => {
   let permission;
   try {
-    permission = await savePermission(<PermissionInterface>{
-      uuid: uuidv5(process.hrtime(), permissionNamespace),
-      user_id: params.user_id,
-      job_uuid: params.job_uuid,
-      date_creation: DateTime.now().toSQL({ includeOffset: false }),
-    });
+    permission = await savePermission(params);
 
     return permission;
   } catch (e) {
