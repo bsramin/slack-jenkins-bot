@@ -59,7 +59,6 @@ export default class Database {
     return result;
   };
 
-
   /**
    * SELECT
    *
@@ -97,18 +96,6 @@ export default class Database {
    * @param {PoolConnection} connection
    */
   public update = async (query: string, replacements: any = {}, connection: PoolConnection | Pool = this.pool) => {
-    const [{ affectedRows: result }] = await this.execute(query, replacements, connection);
-    return result;
-  };
-
-  /**
-   * DELETE
-   *
-   * @param {string} query
-   * @param {object} replacements
-   * @param {PoolConnection} connection
-   */
-  public delete = async (query: string, replacements: any = {}, connection: PoolConnection | Pool = this.pool) => {
     const [{ affectedRows: result }] = await this.execute(query, replacements, connection);
     return result;
   };

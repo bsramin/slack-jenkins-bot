@@ -1,24 +1,38 @@
 import { JenkinsCommandInterface } from '@app/interface/JenkinsInterface';
+import { SlackParamsError } from '@app/error/SlackParamsError';
+import { SlackRequest } from '@app/interface/slackInterface';
 
 /**
  * Extract job slug and parameters for Jenkins
  *
- * @param str
+ * @param slackRequest
  */
-export const extractJenkinsCommand = (str: string): JenkinsCommandInterface => {
-  const [jobSlug, ...parameters] = str.split(' ');
-  const params = [];
-  for (const val of parameters) {
-    const param = val.split('=');
-    params.push(param);
-  }
+export const extractJenkinsCommand = (slackRequest: SlackRequest): JenkinsCommandInterface => {
+  const args = slackRequest.text;
+  try {
+    if (args?.length === 0 && !/\s/.test(<string>args)) {
+      throw new SlackParamsError();
+    }
+    const [jobSlug, ...parameters] = args.split(' ');
+    const params = [];
+    for (const val of parameters) {
+      const param = val.split('=');
+      params.push(param);
+    }
 
-  return {
-    job: jobSlug,
-    params,
-  };
+    return {
+      command: slackRequest.command,
+      job: jobSlug,
+      params: args,
+    };
+  } catch (e) {
+    throw e;
+  }
 };
 
+/**
+ * @param obj
+ */
 export const objectToQueryString = (obj: any): string => {
   let str = [];
   for (const p in obj)

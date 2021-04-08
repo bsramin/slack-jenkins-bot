@@ -3,6 +3,7 @@ import connection from '@app/connection';
 import { DatabaseError } from '@app/error/DatabaseError';
 import Permission from '@app/model/Permission';
 import { SlackUnauthorizedError } from '@app/error/SlackUnauthorizedError';
+import { SlackJobError } from '@app/error/SlackJobError';
 
 /**
  * Save the permission to the database
@@ -50,4 +51,34 @@ export const retrievePermissionByUserAndJob = async (user_id: string, job_uuid: 
   };
 
   return permission;
+};
+
+/**
+ * Retrieve all permissions
+ */
+export const retrieveAllPermissions = async (): Promise<[]> => {
+  let rows;
+  let permissions: [] = [];
+  try {
+    rows = await connection.select(`SELECT permission.uuid, permission.user_id, job.slug, job.job, job.enabled, permission.date_creation FROM permission JOIN job ON permission.job_uuid = job.uuid`);
+  } catch (e) {
+    throw new SlackJobError(`No permissions found or invalid command`);
+  }
+  for (const [, value] of Object.entries(rows)) {
+    permissions.push({
+      // @ts-ignore
+      uuid: value.uuid,
+      // @ts-ignore
+      user_id: value.user_id,
+      // @ts-ignore
+      job_slug: value.slug,
+      // @ts-ignore
+      job_name: value.job,
+      // @ts-ignore
+      enabled: value.enabled,
+      // @ts-ignore
+      date_creation: value.date_creation,
+    });
+  }
+  return permissions;
 };

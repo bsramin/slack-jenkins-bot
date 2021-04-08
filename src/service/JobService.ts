@@ -12,7 +12,6 @@ export const addJob = async (params: JobInterface): Promise<string> => {
   let job;
   try {
     job = await saveJob(params);
-
     return job;
   } catch (e) {
     throw new SlackSaveError(e);

@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import koaBody from 'koa-body';
 import { checkToken } from '@app/service/SlackService';
-import { executeFromSlack, latestRequests } from '@app/controller/SlackExecuteController';
+import { execute, latestRequests } from '@app/controller/SlackController';
 import {
   convertRequestToSlackRequest,
   SlackSlashErrorResponse,
@@ -11,6 +11,15 @@ import logger from '@app/logger';
 
 const router = new Router();
 
+/*
+ * ######## ##     ## ########  ######  ##     ## ######## ########
+ * ##        ##   ##  ##       ##    ## ##     ##    ##    ##
+ * ##         ## ##   ##       ##       ##     ##    ##    ##
+ * ######      ###    ######   ##       ##     ##    ##    ######
+ * ##         ## ##   ##       ##       ##     ##    ##    ##
+ * ##        ##   ##  ##       ##    ## ##     ##    ##    ##
+ * ######## ##     ## ########  ######   #######     ##    ########
+ */
 router.post('execute', '/' + Config.executePath, koaBody(), async ctx => {
   ctx.type = 'application/json';
   ctx.status = 200;
@@ -24,7 +33,7 @@ router.post('execute', '/' + Config.executePath, koaBody(), async ctx => {
     /**
      * Execute the command
      */
-    response = await executeFromSlack(
+    response = await execute(
       convertRequestToSlackRequest(ctx.request),
     );
   } catch (e) {
@@ -34,6 +43,15 @@ router.post('execute', '/' + Config.executePath, koaBody(), async ctx => {
   return ctx.body = response;
 });
 
+/*
+ * ##          ###    ######## ########  ######  ########    ########  ########  #######   ######
+ * ##         ## ##      ##    ##       ##    ##    ##       ##     ## ##       ##     ## ##    ##
+ * ##        ##   ##     ##    ##       ##          ##       ##     ## ##       ##     ## ##
+ * ##       ##     ##    ##    ######    ######     ##       ########  ######   ##     ##  ######
+ * ##       #########    ##    ##             ##    ##       ##   ##   ##       ##  ## ##       ##
+ * ##       ##     ##    ##    ##       ##    ##    ##       ##    ##  ##       ##    ##  ##    ##
+ * ######## ##     ##    ##    ########  ######     ##       ##     ## ########  ##### ##  ######
+ */
 router.post('latestRequests', '/requests/latest', koaBody(), async ctx => {
   ctx.type = 'application/json';
   ctx.status = 200;

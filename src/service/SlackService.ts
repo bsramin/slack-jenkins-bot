@@ -24,6 +24,9 @@ export const checkToken = (token: string): void => {
   }
 };
 
+/**
+ * @param job
+ */
 export const responseSlack = (job: JobInterface) => {
   return SlackSlashResponse(
     <SlackSlashResponseOptions>{

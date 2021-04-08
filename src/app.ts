@@ -16,6 +16,9 @@ const app = new Koa();
  */
 app.use(helmet());
 
+/**
+ * Logger
+ */
 const koaLogger = koaPino({ logger });
 app.use(koaLogger);
 
@@ -33,6 +36,5 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
  * Routes
  */
 app.use(router.routes());
-
 
 export default app;

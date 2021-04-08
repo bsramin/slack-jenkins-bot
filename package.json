@@ -27,6 +27,9 @@
     "dev:permission:add": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/addPermissionCommand.ts",
     "prod:permission:add": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/addPermissionCommand.js",
 
+    "dev:permission:list": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/listPermissionCommand.ts",
+    "prod:permission:list": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/listPermissionCommand.js",
+
     "tsc": "tsc",
     "compile": "tsc -p . --skipLibCheck"
   },

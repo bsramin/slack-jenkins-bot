@@ -7,8 +7,8 @@ import { v5 as uuidv5 } from 'uuid';
 import { namespace as buildNamespace } from '@app/model/Build';
 import { DateTime } from 'luxon';
 import { spawn, Thread, Worker } from 'threads';
-import { WorkerJobInfo } from '@app/worker/retrieveJobInfo';
-import { WorkerJobStatus } from '@app/worker/checkJobStatus';
+import { WorkerJobInfo } from '@app/worker/retrieveJobInfoWorker';
+import { WorkerJobStatus } from '@app/worker/checkJobStatusWorker';
 import { sleep } from '@app/util/System';
 import { saveBuildEnded, saveBuildStarted } from '@app/repository/BuildRepository';
 import { JobInterface } from '@app/interface/JobInterface';
@@ -121,7 +121,7 @@ const executeJob = async (jobName: string, params: any): Promise<string> => {
  */
 const retrieveJobInfo = async (getterJobInfoUrl: string, jobId: string, reqId: string): Promise<any> => {
 
-  const worker = await spawn<typeof WorkerJobInfo>(new Worker(`../worker/retrieveJobInfo`));
+  const worker = await spawn<typeof WorkerJobInfo>(new Worker(`../worker/retrieveJobInfoWorker`));
 
   try {
     let item;
@@ -152,7 +152,7 @@ const retrieveJobInfo = async (getterJobInfoUrl: string, jobId: string, reqId: s
  * @param build
  */
 const checkJobFinished = async (jobName: string, build: BuildInterface): Promise<any> => {
-  const worker = await spawn<typeof WorkerJobStatus>(new Worker(`../worker/checkJobStatus`));
+  const worker = await spawn<typeof WorkerJobStatus>(new Worker(`../worker/checkJobStatusWorker`));
   const getterBaseJobApiUrl = composeBuildedJobApiUrl(jobName, build.build_number);
   try {
     let item;

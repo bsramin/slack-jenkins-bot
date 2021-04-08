@@ -1,5 +1,9 @@
 import { PermissionInterface } from '@app/interface/PermissionInterface';
-import { retrievePermissionByUserAndJob, savePermission } from '@app/repository/PermissionRepository';
+import {
+  retrieveAllPermissions,
+  retrievePermissionByUserAndJob,
+  savePermission,
+} from '@app/repository/PermissionRepository';
 import { SlackSaveError } from '@app/error/SlackSaveError';
 import { JobInterface } from '@app/interface/JobInterface';
 
@@ -12,10 +16,21 @@ export const addPermission = async (params: PermissionInterface): Promise<string
   let permission;
   try {
     permission = await savePermission(params);
-
     return permission;
   } catch (e) {
     throw new SlackSaveError(e);
+  }
+}
+
+/**
+ * Get all permissions
+ */
+export const getAllpermissions = async (): Promise<[]> => {
+  try {
+    const permissions = await retrieveAllPermissions();
+    return permissions;
+  } catch (e) {
+    throw e;
   }
 }
 

@@ -3,7 +3,6 @@ import {
   SlackSlashAttachments, SlackSlashResponseOptions,
 } from '@app/interface/slackInterface';
 import { addRequest, getLatestRequests } from '@app/service/ReqService';
-import { SlackParamsError } from '@app/error/SlackParamsError';
 import { checkUserPermission } from '@app/service/PermissionService';
 import { getJob } from '@app/service/JobService';
 import { extractJenkinsCommand } from '@app/util/String';
@@ -13,25 +12,16 @@ import { responseSlack } from '@app/service/SlackService';
 import { severityType, SlackSlashResponse } from '@app/util/SlackSlash';
 
 /**
+ * Generic execute command from Slack to Jenkins
+ *
  * @param params
  */
-export const executeFromSlack = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
+export const execute = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
   try {
-    /**
-     * Get the command
-     */
-      // TODO: map to db
-      // @ts-ignore
-    const command = params.command;
-
     /**
      * Get the jenkins command
      */
-    const args = params.text;
-    if (args?.length === 0 && !/\s/.test(<string>args)) {
-      return Promise.reject(new SlackParamsError());
-    }
-    const jenkinsCommand = extractJenkinsCommand(args);
+    const jenkinsCommand = extractJenkinsCommand(params);
 
     /**
      * Get the jenkins job
@@ -42,7 +32,7 @@ export const executeFromSlack = async (params: SlackRequest): Promise<SlackSlash
      * Save the request
      */
     const request = await addRequest(params);
-    logger.info(`${decodeURIComponent(job.job)} executed with '${args}' by ${request.user_id}`);
+    logger.info(`${decodeURIComponent(job.job)} executed with '${jenkinsCommand.params}' by ${request.user_id}`);
 
     /**
      * Check the user authorization
@@ -64,6 +54,9 @@ export const executeFromSlack = async (params: SlackRequest): Promise<SlackSlash
 };
 
 /**
+ * Retrieve the latest requests
+ *
+ * @todo merge in exevute method ("One Ring to rule them all")
  * @param params
  */
 export const latestRequests = async (params: SlackRequest): Promise<SlackSlashAttachments> => {
