@@ -1,7 +1,7 @@
-import connection from '@app/connection';
 import * as fs from 'fs';
 import path from 'path';
 import logger from '@app/logger';
+import connection from '@app/connection';
 
 (async (): Promise<void> => {
   try {

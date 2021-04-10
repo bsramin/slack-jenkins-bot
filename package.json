@@ -6,36 +6,33 @@
   "authors": [
     "Ramin Banihashemi <a@ramin.it> (https://github.com/bsramin)"
   ],
-  "main": "dist/src/index.js",
+  "main": "src/server.js",
+  "_moduleAliases": {
+    "@app": "src"
+  },
   "engines": {
     "node": "14.x.x",
     "npm": "7.x.x"
   },
   "scripts": {
     "dev:init": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/init/db.ts",
-    "prod:init": "ENVK=.env node -r envk ./dist/init/db.js",
-
+    "prod:init": "ENVK=.env node -r module-alias/register -r envk ./src/init/db.js",
     "dev": "ENVK=.env nodemon --ignore 'src/**/*.test.ts' -e ts,njk,md,json --exec node -r envk -r ts-node/register -r tsconfig-paths/register ./src/server.ts",
-    "prod": "ENVK=.env node -r module-alias/register -r envk ./dist/src/server.js",
-
+    "prod": "ENVK=.env node -r module-alias/register -r envk ./src/server.js",
+    "copy:public": "copyfiles './src/public/**/*' dist",
+    "copy:initsql": "copyfiles './src/init/tables.sql' dist/init/tables.sql",
     "dev:job:add": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/addNewJobCommand.ts",
-    "prod:job:add": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/addNewJobCommand.js",
-
+    "prod:job:add": "ENVK=.env node -r module-alias/register -r envk ./src/command/addNewJobCommand.js",
     "dev:job:list": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/listJobCommand.ts",
-    "prod:job:list": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/listJobCommand.js",
-
+    "prod:job:list": "ENVK=.env node -r module-alias/register -r envk ./src/command/listJobCommand.js",
     "dev:permission:add": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/addPermissionCommand.ts",
-    "prod:permission:add": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/addPermissionCommand.js",
-
+    "prod:permission:add": "ENVK=.env node -r module-alias/register -r envk ./src/command/addPermissionCommand.js",
     "dev:permission:list": "ENVK=.env node -r envk -r ts-node/register -r tsconfig-paths/register ./src/command/listPermissionCommand.ts",
-    "prod:permission:list": "ENVK=.env node -r module-alias/register -r envk ./dist/src/command/listPermissionCommand.js",
-
+    "prod:permission:list": "ENVK=.env node -r module-alias/register -r envk ./src/command/listPermissionCommand.js",
     "tsc": "tsc",
     "compile": "tsc -p . --skipLibCheck"
   },
   "dependencies": {
-    "@types/inquirer": "^7.3.1",
-    "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "commander": "^7.2.0",
     "envk": "^2.0.1",
@@ -66,6 +63,9 @@
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^14.14.35",
     "@types/pino": "^6.3.6",
+    "@types/inquirer": "^7.3.1",
+    "@types/uuid": "^8.3.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^2.0.7",
     "pino-pretty": "^4.7.1",
     "ts-node": "^9.1.1",

@@ -1,0 +1,10 @@
+.idea
+.git
+.editorconfig
+.env.dist
+.gitignore
+.eslintrc
+.nvmrc
+.prettierrc
+.dockerignore
+documentation
