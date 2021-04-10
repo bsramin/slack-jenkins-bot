@@ -13,7 +13,7 @@
 - Clone this repo
 - Create a new `.env` file from `.env.dist` with the parameters correctly set
   - If you use the bundled docker-compose use `db` for the database host
-- `docker-compose up -d`
+- `docker-compose up --build -d`
 - `docker-compose run app npm run prod:init`
 
 
