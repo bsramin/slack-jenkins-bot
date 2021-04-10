@@ -1,5 +1,8 @@
 FROM node:14.16.0-alpine3.13 as builder
 
+# Install git (required by npm install)
+RUN apk add --no-cache --virtual .build-deps git
+
 # Install essential packages
 RUN npm install -g npm@7
 
@@ -16,6 +19,9 @@ RUN npm run compile
 # Copy static files
 COPY ./src/public /app/dist/src/public
 COPY ./src/init/tables.sql /app/dist/src/init/tables.sql
+
+# Clean
+RUN apk del .build-deps
 
 FROM node:14.16.0-alpine3.13 as app
 
