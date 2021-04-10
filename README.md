@@ -1,10 +1,13 @@
-# SLACK-JENKINS BOT
+# SLACK <-> JENKINS BOT
+
+This bot allows you to safely and _effectively_ run jobs on jenkins _directly from Slack_, also receiving end-of-execution notifications.
+Through permissions it is possible to configure, for each single job, who has the right to execute it from slack and at any time it is possible to check the last jobs performed.
 
 ## USAGE
 
-From Slack simply execute command
+After the [installation](documentation/install.md), from Slack simply run the commands.
 
-eg.
+Eg.
 
   `/do job1`
 
