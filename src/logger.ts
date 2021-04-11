@@ -6,7 +6,7 @@ import pino from 'pino';
  * Logger
  */
 let loggerOptions;
-if (Config.environment === environment.PROD) {
+if (Config.environment !== environment.PROD) {
   loggerOptions = {
     prettifier: require('pino-pretty'),
     prettyPrint: {
