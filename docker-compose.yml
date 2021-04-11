@@ -12,7 +12,7 @@ services:
     ports:
       - ${DOCKER_EXPOSE_MYSQL_PORT}:3306
     environment:
-      MYSQL_ROOT_PASSWORD: bot
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: slack_jenkins_bot
     volumes:
       - mysql-data:/var/lib/mysql
