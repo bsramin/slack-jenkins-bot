@@ -25,7 +25,7 @@ export const extractJenkinsCommand = (slackRequest: SlackRequest): JenkinsComman
     return {
       command: slackRequest.command,
       job: jobSlug,
-      params: args,
+      params,
     };
   } catch (e) {
     throw e;

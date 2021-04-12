@@ -83,7 +83,17 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
       ),
     );
   } catch (e) {
-    throw e;
+    logger.error(e);
+    await callbackSlack(request,
+      SlackSlashResponse(
+        <SlackSlashResponseOptions>{
+          response_type: 'in_channel',
+          title: decodeURIComponent(job.job),
+          message: `:firecracker: Failed!`,
+          severity: severityType.error,
+        }
+      ),
+    );
   }
 };
 
