@@ -17,7 +17,7 @@ export const extractJenkinsCommand = (slackRequest: SlackRequest): JenkinsComman
     const params = [];
     for (const val of parameters) {
       const param = val.split('=');
-      if (param != undefined) {
+      if (param !== undefined) {
         params.push(param);
       }
     }

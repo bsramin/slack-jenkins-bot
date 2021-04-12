@@ -106,7 +106,11 @@ const executeJob = async (jobName: string, params: any): Promise<string> => {
       },
     });
 
-    return response.headers.location;
+    if (response.status >= 200 && response.status < 300) {
+      return response.headers.location;
+    } else {
+      throw new JenkinsError();
+    }
   } catch (e) {
     throw new JenkinsError(e);
   }
