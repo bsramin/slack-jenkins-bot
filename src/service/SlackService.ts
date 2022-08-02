@@ -43,7 +43,7 @@ export const responseSlack = (job: JobInterface) => {
       },
       {
         title: 'Job',
-        value: `<${composeBaseJobApiUrl(job.job)}|View>`,
+        value: `<${composeBaseJobApiUrl(job.job, true)}|View>`,
         short: true,
       },
     ]

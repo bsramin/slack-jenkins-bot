@@ -17,6 +17,7 @@ const Config: ConfigInterface = {
   },
   jenkins: {
     domain: process.env.JENKINS_DOMAIN ?? '',
+    domain_public: process.env.JENKINS_DOMAIN_PUBLIC ?? '',
     token: process.env.JENKINS_TOKEN ?? '',
     username: process.env.JENKINS_USERNAME ?? '',
     password: process.env.JENKINS_PASSWORD ?? '',
