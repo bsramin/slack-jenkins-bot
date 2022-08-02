@@ -90,6 +90,18 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
         ],
       ),
     );
+
+    const artifacts = await retrieveArtifacts(job.job, build);
+
+    if (null !== artifacts) {
+      await callbackSlack(request,
+        SlackSlashResponse(
+          <SlackSlashResponseOptions>{
+            response_type: 'ephemeral',
+          }
+        , artifacts as SlackSlashAttachmentFields[])
+      );
+    }
   } catch (e) {
     logger.error(e);
     await callbackSlack(request,
@@ -197,6 +209,33 @@ const checkJobFinished = async (jobName: string, build: BuildInterface): Promise
     logger.error(error);
   } finally {
     await Thread.terminate(worker);
+  }
+};
+
+/**
+* Retrieve artifacts from the job
+*
+* @param jobName
+* @param build
+*/
+const retrieveArtifacts = async (jobName: string, build: BuildInterface): Promise<any> => {
+  try {
+    const apiUrl = composeBuildedJobApiUrl(jobName, build.build_number)+'/lastSuccessfulBuild/artifact/slackResponse.txt';
+    const response = await axios({
+      url: apiUrl,
+      method: 'get',
+      auth: {
+        username: Config.jenkins.username,
+        password: Config.jenkins.password,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    }
+    return null
+  } catch (e) {
+    return null
   }
 };
 
