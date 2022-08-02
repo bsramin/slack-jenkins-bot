@@ -12,6 +12,7 @@ interface ConfigInterface {
   },
   jenkins: {
     domain: string;
+    domain_public: string;
     token: string;
     username: string;
     password: string;

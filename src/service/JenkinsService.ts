@@ -21,15 +21,23 @@ import logger from '@app/logger';
 /**
  * @param jobName
  * @param buildNumber
+ * @param publicUrl
  */
-export const composeBuildedJobApiUrl = (jobName: string, buildNumber: string): string => {
+export const composeBuildedJobApiUrl = (jobName: string, buildNumber: string, publicUrl: boolean = false): string => {
+  if (publicUrl) {
+    return `${Config.jenkins.domain_public}/job/${jobName}/${buildNumber}/`;
+  }
   return `${Config.jenkins.domain}/job/${jobName}/${buildNumber}/`;
 };
 
 /**
  * @param jobName
+ * @param publicUrl
  */
-export const composeBaseJobApiUrl = (jobName: string): string => {
+export const composeBaseJobApiUrl = (jobName: string, publicUrl: boolean = false): string => {
+  if (publicUrl) {
+    return `${Config.jenkins.domain_public}/job/${jobName}/`;
+  }
   return `${Config.jenkins.domain}/job/${jobName}/`;
 };
 
@@ -76,7 +84,7 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
           },
           {
           title: 'Console',
-          value: `<${composeBuildedJobApiUrl(job.job, build.build_number)}console|View>`,
+          value: `<${composeBuildedJobApiUrl(job.job, build.build_number, true)}console|View>`,
           short: true,
           },
         ],
