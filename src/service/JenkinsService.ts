@@ -68,28 +68,58 @@ export const jenkinsCall = async (job: JobInterface, jenkinsCommandParams: any, 
     build = await checkJobFinished(job.job, build);
     await saveBuildEnded(build);
 
-    await callbackSlack(request,
-      SlackSlashResponse(
-        <SlackSlashResponseOptions>{
-          response_type: 'in_channel',
-          title: decodeURIComponent(job.job),
-          message: (build.status == 'SUCCESS') ? `:tada: Completed.` : `:firecracker: Failed!`,
-          severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
-        },
-        <SlackSlashAttachmentFields[]>[
-          {
-            title: 'Build number',
-            value: build.build_number,
-            short: true,
+    const artifactsFieldsString = await retrieveArtifacts(job.job, build);
+
+    // if the artifact (built by jenkins job as a csv) is present, use it to build the response on slack
+    if (null !== artifactsFieldsString) {
+      const artifactsFieldsArray = artifactsFieldsString.split(/\r?\n/);
+
+      let artifactsFields: SlackSlashAttachmentFields[] = [];
+      artifactsFieldsArray.forEach((row: string) => {
+        if (row.length > 0) {
+          const fields = row.split(/\s*,\s*/);
+
+          console.log(fields);
+          artifactsFields.push({
+            "title": fields[0].replace(/(^"|"$)/g, ''),
+            "value": fields[1].replace(/(^"|"$)/g, ''),
+            "short": (fields[2].toLowerCase() === 'true')
+          })
+        }
+      })
+
+      await callbackSlack(request,
+        SlackSlashResponse(
+          <SlackSlashResponseOptions>{
+            response_type: 'in_channel',
           },
-          {
-          title: 'Console',
-          value: `<${composeBuildedJobApiUrl(job.job, build.build_number, true)}console|View>`,
-          short: true,
+          <SlackSlashAttachmentFields[]>artifactsFields,
+        ),
+      );
+    } else {
+      await callbackSlack(request,
+        SlackSlashResponse(
+          <SlackSlashResponseOptions>{
+            response_type: 'in_channel',
+            title: decodeURIComponent(job.job),
+            message: (build.status == 'SUCCESS') ? `:tada: Completed.` : `:firecracker: Failed!`,
+            severity: (build.status == 'SUCCESS') ? severityType.success : severityType.error,
           },
-        ],
-      ),
-    );
+          <SlackSlashAttachmentFields[]>[
+            {
+              title: 'Build number',
+              value: build.build_number,
+              short: true,
+            },
+            {
+              title: 'Console',
+              value: `<${composeBuildedJobApiUrl(job.job, build.build_number, true)}console|View>`,
+              short: true,
+            },
+          ],
+        ),
+      );
+    }
   } catch (e) {
     logger.error(e);
     await callbackSlack(request,
@@ -197,6 +227,34 @@ const checkJobFinished = async (jobName: string, build: BuildInterface): Promise
     logger.error(error);
   } finally {
     await Thread.terminate(worker);
+  }
+};
+
+/**
+* Retrieve artifacts from the job
+*
+* @param jobName
+* @param build
+*/
+const retrieveArtifacts = async (jobName: string, build: BuildInterface): Promise<any> => {
+  try {
+    const apiUrl = composeBuildedJobApiUrl(jobName, build.build_number)+'/artifact/slackResponse.txt';
+    const response = await axios({
+      url: apiUrl,
+      method: 'get',
+      auth: {
+        username: Config.jenkins.username,
+        password: Config.jenkins.password,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    }
+    return null
+  } catch (e) {
+    logger.error(e);
+    return null
   }
 };
 
